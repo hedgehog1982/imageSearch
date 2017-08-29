@@ -9,6 +9,30 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 
+var imageSearch = require('node-google-image-search');
+
+//var GoogleSearch = require('google-search');  //setup search
+//var googleSearch = new GoogleSearch({
+//  key: process.env.key,
+//  cx: process.env.cx
+//})
+
+
+/*function gSearch(searchTerm, amount, callback){
+  googleSearch.build({
+  q: "cats",
+  start: 1,
+  fileType: "jpg",
+  //gl: "tr", //geolocation, 
+  //lr: "lang_tr",
+  num: 3, // Number of search results to return between 1 and 10, inclusive 
+  //siteSearch: "http://kitaplar.ankara.edu.tr/" // Restricts results to URLs from a specified site 
+}, function(error, response) {
+  callback(response);
+}); 
+}
+*/
+
 if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
     var allowedOrigins = ['https://narrow-plane.gomix.me', 'https://www.freecodecamp.com'];
@@ -38,10 +62,29 @@ app.route('/')
 		  res.sendFile(process.cwd() + '/views/index.html');
     })
 
-// Respond not found to all the wrong routes
+//////////////////////////////////////////// Respond with searches \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 app.use(function(req, res, next){
-  res.status(404);
-  res.type('txt').send('Not found');
+
+  // break it down into search term and amount of searches
+  var searchTerm =(req.originalUrl).split('?').shift().split("/").join("").split("%20").join(" ");  //remove garbage 
+  var searches = (req.originalUrl).split("=").pop();
+  
+    // do search (google api?)  and display
+var results = imageSearch(searchTerm, callback, 0, searches); 
+function callback(results) {
+	var filterRes = results.map( function (item){
+    var picked = {"url" : item.link, "snippet": item.snippet, "thumbnail": item.image.thumbnailLink, "context": item.image.contextLink};
+    return picked;    
+  });  
+  res.send(filterRes);
+}
+  
+
+  
+  // display search (maps function?)
+
+
+  
 });
 
 // Error Middleware

@@ -20,7 +20,7 @@ function addDB (search, time){
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
-    console.log('Connection established to', url);
+    //console.log('Connection established to', url);
     var collection = db.collection('searches');  // seraching a collection in this searches
 		    collection.insert({  //insert into our collection (docs)
 				term: search

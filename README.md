@@ -1,1 +1,1 @@
-# imageSearch
+# Backend Challenges boilerplate - package.json

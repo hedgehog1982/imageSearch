@@ -101,13 +101,6 @@ app.route('/imagesearch')
     
   });
   
-  
-  
-  
-      //res.send(currentTime);
-      //readDB and write in reverse order
-
-    
     })
 
     

@@ -11,27 +11,57 @@ var app = express();
 
 var imageSearch = require('node-google-image-search');
 
-//var GoogleSearch = require('google-search');  //setup search
-//var googleSearch = new GoogleSearch({
-//  key: process.env.key,
-//  cx: process.env.cx
-//})
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var url = "mongodb://" + process.env.SECRET +"@ds149763.mlab.com:49763/freecodecamp"          ; //url for connection to database
 
-
-/*function gSearch(searchTerm, amount, callback){
-  googleSearch.build({
-  q: "cats",
-  start: 1,
-  fileType: "jpg",
-  //gl: "tr", //geolocation, 
-  //lr: "lang_tr",
-  num: 3, // Number of search results to return between 1 and 10, inclusive 
-  //siteSearch: "http://kitaplar.ankara.edu.tr/" // Restricts results to URLs from a specified site 
-}, function(error, response) {
-  callback(response);
-}); 
+function addDB (search, time){
+    MongoClient.connect(url, function (err, db) {
+  if (err) {
+    console.log('Unable to connect to the mongoDB server. Error:', err);
+  } else {
+    console.log('Connection established to', url);
+    var collection = db.collection('searches');  // seraching a collection in this searches
+		    collection.insert({  //insert into our collection (docs)
+				term: search
+								,when: time
+	
+				},function(err, documents) { // recieve error or documents
+					if (err) throw err;
+					
+					db.close();  // close or it get grumpy
+				})
+    //Close connection
+  }
+});  
 }
-*/
+
+function readDB (callback){
+  
+    MongoClient.connect(url, function (err, db) {  
+      if (err) {
+          //console.log('Unable to connect to the mongoDB server. Error:', err);
+      } else {
+          //console.log('Connection established to', url);
+
+var collection = db.collection('searches');  // seraching a collection in this docs
+            collection.find({
+            },{//find all records in our collection (URL)
+                term: 1,
+                when: 1,
+                _id:0  //dont include ids  //because why would you
+				}).sort({when:-1}) //sort in reverse order
+            .limit(10)  //limit to 10 records     
+            .toArray(function(err, documents) { // recieve error or documents
+              if (err) {console.log("error is" + err);}
+					//console.log(documents);					
+					db.close();
+            callback (documents);
+      }); //end of find
+    }  //end of else
+  })
+
+  }
 
 if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
@@ -58,17 +88,45 @@ app.route('/_api/package.json')
   });
   
 app.route('/')
-    .get(function(req, res) {
+    .get(function(req, res,next) {
 		  res.sendFile(process.cwd() + '/views/index.html');
+
     })
+
+app.route('/imagesearch')
+    .get(function(req, res, next) {
+    var currentTime = Date();
+  readDB(function(documents){
+    res.send(documents);
+    
+  });
+  
+  
+  
+  
+      //res.send(currentTime);
+      //readDB and write in reverse order
+
+    
+    })
+
+    
 
 //////////////////////////////////////////// Respond with searches \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 app.use(function(req, res, next){
+  console.log(req.path);
+  if ( req.path == '/') return next();  //i dont think this is the correct way of skipping middleware..
+  if (req.path == '/favicon.ico') return next(); 
+    if (req.path == '/imagesearch') return next(); 
+      if (req.path == '/imagesearch/') return next(); 
 
+ 
   // break it down into search term and amount of searches
   var searchTerm =(req.originalUrl).split('?').shift().split("/").join("").split("%20").join(" ");  //remove garbage 
-  var searches = (req.originalUrl).split("=").pop();
+   var searches = (req.originalUrl).split("=").pop();
   
+  if (isNaN(searches)) {searches = 10;}  //allows a search even if syntax is not correct
+   
     // do search (google api?)  and display
 var results = imageSearch(searchTerm, callback, 0, searches); 
 function callback(results) {
@@ -78,10 +136,10 @@ function callback(results) {
   });  
   res.send(filterRes);
 }
+var currentTime = Date(); 
+addDB(searchTerm, currentTime);
   
 
-  
-  // display search (maps function?)
 
 
   

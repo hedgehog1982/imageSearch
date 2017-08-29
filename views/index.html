@@ -9,8 +9,98 @@
 
    <body>
       <div class="container">
-         <h1>Manage Node.js projects and npm packages using package.json</h1>
-         <h3>Part 1 of Free Code Camp Backend Challenges</h3>
+        <h1 >
+          Image Search Abstraction Layer
+        </h1>
+        <ol>
+        <li>
+           I can get the image URLs, alt text and page urls for a set of images relating to a given search string.
+          </li>
+          <li>
+             I can paginate through the responses by adding a ?offset=2 parameter to the URL.
+          </li>
+          <li>
+             I can get a list of the most recently submitted search strings.
+          </li>       
+        </ol>
+        
+        <h2>
+          Example :- https://wax-line.glitch.me/mouse?offset=2  
+        </h2>
+        <ul><h3>
+          <li>Would return an images search for mouse and return 2 results</li>
+          </h3>
+          <li>[
+<p class="object">{            </p>
+<p class="json">"url": "https://static.wixstatic.com/media/8f3659_4e9a5ae089b34a95a03e260207e8d1ed~mv2.jpg",</p>
+<p class="json">"snippet": "The Mouse - An Explanation of Everything | Hawaiian Culture ...",</p>
+<p class="json">"thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-sPane8sS2JnIsCshbh3cEytDgu7ssO2fiBv8v0aVNVxDT32UlwpCNTSM",</p>
+<p class="json">"context": "https://www.mauisaltandsage.com/single-post/2017/01/03/The-Mouse---An-Explanation-of-Everything"</p>
+            <p class="object">},</p>
+            <p class="object">{</p>
+<p class="json">"url": "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/01/12/19/mouse.jpg",</p>
+<p class="json">"snippet": "Mouse spotted on plane costs British Airways quarter of a million ...",</p>
+<p class="json">"thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3_Yw2IafJhqyDOxlf1uiGI7nOZ5Qek9TpXy3GgdKv4A06ktkMxfGCvZFJ",</p>
+<p class="json">"context": "http://www.independent.co.uk/travel/news-and-advice/mouse-delays-british-airways-california-flight-a7606566.html"</p>
+<p class="object">}         </p>
+<p>]            </p></li>
+          
+          
+        </ul>
+        <h2>
+Example :-https://wax-line.glitch.me/imagesearch
+        </h2>
+                  <h3>
+            Would return the last ten search results and when they were done
+          </h3>
+   <p>      [ </p>
+<p class="object">{ </p>
+<p class="json">"term": "mouse", </p>
+<p class="json">"when": "Tue Aug 29 2017 17:24:33 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "mouse", </p>
+<p class="json">"when": "Tue Aug 29 2017 17:20:52 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "massive dogs", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:14:48 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "dogs", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:14:26 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "rabbits", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:14:21 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "badgers", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:14:13 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "sheep", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:13:54 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "pigs", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:13:48 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "elephants", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:13:42 GMT+0000 (UTC)" </p>
+<p class="object">}, </p>
+<p class="object">{ </p>
+<p class="json">"term": "cow", </p>
+<p class="json">"when": "Tue Aug 29 2017 16:13:35 GMT+0000 (UTC)" </p>
+<p class="object">} </p>
+<p>]        </p>
+        
+        
+          
+
+        
+
       </div>
    </body>
 

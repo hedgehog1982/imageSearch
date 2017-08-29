@@ -58,16 +58,33 @@ app.route('/_api/package.json')
   });
   
 app.route('/')
-    .get(function(req, res) {
+    .get(function(req, res,next) {
 		  res.sendFile(process.cwd() + '/views/index.html');
+
     })
+
+app.route('/imagesearch')
+    .get(function(req, res, next) {
+      res.send(" this is where search results will be ");
+
+    
+    })
+
+    
 
 //////////////////////////////////////////// Respond with searches \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 app.use(function(req, res, next){
-
+  console.log(req.path);
+  if ( req.path == '/') return next();  //i dont think this is the correct way of skipping middleware..
+  if (req.path == '/favicon.ico') return next(); 
+    if (req.path == '/imagesearch') return next(); 
+ 
   // break it down into search term and amount of searches
   var searchTerm =(req.originalUrl).split('?').shift().split("/").join("").split("%20").join(" ");  //remove garbage 
-  var searches = (req.originalUrl).split("=").pop();
+   var searches = (req.originalUrl).split("=").pop();
+  
+  if (isNaN(searches)) {searches = 10;}  //allows a search even if syntax is not correct
+ 
   
     // do search (google api?)  and display
 var results = imageSearch(searchTerm, callback, 0, searches); 
@@ -81,7 +98,7 @@ function callback(results) {
   
 
   
-  // display search (maps function?)
+
 
 
   
